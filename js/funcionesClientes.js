@@ -1,6 +1,6 @@
 function traerInformacionClientes(){
     $.ajax({    
-            url : 'https://g1a87438372da7f-database1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/client/client',
+            url : 'http://129.151.123.56:8080/api/Client/all',
             type : 'GET',
             dataType : 'JSON',
             
@@ -9,16 +9,16 @@ function traerInformacionClientes(){
             },
             success : function(resultado) {
                 $("#resultado").empty();
-                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Email<th>Edad<th>Acciones"
+                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Email<th>Edad"
                 filas = ""
-                for(i = 0;  i < resultado.items.length; i++){
+                for(i = 0;  i < resultado.length; i++){
                    filas += "<tr>"
-                   filas +="<td>"+resultado.items[i].id+"</td>"   
-                   filas +="<td>"+resultado.items[i].name+"</td>" 
-                   filas +="<td>"+resultado.items[i].email+"</td>" 
-                   filas +="<td>"+resultado.items[i].age+"</td>" 
-                   filas +="<td><button onclick='eliminarCliente("+resultado.items[i].id+")'>Eliminar</button>"
-                   filas += "<button onclick='actualizarCliente("+resultado.items[i].id+")'>Actualizar</button>"
+                   filas +="<td>"+resultado[i].idClient+"</td>"   
+                   filas +="<td>"+resultado[i].name+"</td>" 
+                   filas +="<td>"+resultado[i].email+"</td>" 
+                   filas +="<td>"+resultado[i].age+"</td>" 
+                   /*filas +="<td><button onclick='eliminarCliente("+resultado[i].id+")'>Eliminar</button>"
+                   filas += "<button onclick='actualizarCliente("+resultado[i].id+")'>Actualizar</button>"*/
                 }
                 $("#resultado").append(tabla + filas+"</tr></table></center>")
                 console.log(resultado)
@@ -31,22 +31,22 @@ function buscarPorIDClientes(id){
         alert("Primero ingrese un dato en el campo "+id.attr("id"))
     else{
         $.ajax({    
-            url : 'https://g1a87438372da7f-database1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/client/client/'+id.val(),
+            url : 'http://129.151.123.56:8080/api/Client/'+id.val(),
             dataType : 'JSON',
             type : 'GET',
             success : function(resultado) {
-                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Email<th>Edad<th>Acciones"
+                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Email<th>Edad"
                 filas =""
-                if(resultado.items.length > 0){
+                if(resultado){
                     console.log(resultado)
                     $("#resultado").empty();
                     filas += "<tr>"
-                    filas +="<td>"+resultado.items[0].id+"</td>"   
-                    filas +="<td>"+resultado.items[0].name+"</td>" 
-                    filas +="<td>"+resultado.items[0].email+"</td>" 
-                    filas +="<td>"+resultado.items[0].age+"</td>" 
-                    filas +="<td><button onclick='eliminarCliente("+resultado.items[0].id+")'>Eliminar</button>"
-                   filas += "<button onclick='actualizarCliente("+resultado.items[0].id+")'>Actualizar</button>"
+                    filas +="<td>"+resultado.idClient+"</td>"   
+                    filas +="<td>"+resultado.name+"</td>" 
+                    filas +="<td>"+resultado.email+"</td>" 
+                    filas +="<td>"+resultado.age+"</td>" 
+                    /*filas +="<td><button onclick='eliminarCliente("+resultado.items[0].id+")'>Eliminar</button>"
+                    filas += "<button onclick='actualizarCliente("+resultado.items[0].id+")'>Actualizar</button>"*/
                     $("#resultado").append(tabla + filas+"</tr></table></center>")  
                 }
                 else{
@@ -64,13 +64,18 @@ function buscarPorIDClientes(id){
 }
 
 function guardarCliente(){ 
+var datos ={ 
+        name: $("#name").val(),
+        email: $("#email").val(),
+        age: $("#age").val(),
+        password: $("#password").val(),
+     }
+
     $.ajax({    
-        url : 'https://g1a87438372da7f-database1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/client/client',
-        data : { 
-                name: $("#name").val(),
-                email: $("#email").val(),
-                age: $("#age").val() },
+        url : 'http://129.151.123.56:8080/api/Client/save',
+        data : JSON.stringify(datos),
         type : 'POST',
+        contentType: 'application/json',
         dataType: 'JSON',
         success : function(json, textStatus, xhr) {
     

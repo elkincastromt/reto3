@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reto2 - Agregar Doctor</title>
+    <title>Reto3 - Agregar Doctor</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="js/funcionesDoctores.js"></script>
+    <script>cargarDatosSelect()</script>
 </head>
 <body>
     <center>
@@ -16,24 +17,31 @@
             </tr>
         </table>
         <h1>Agregar Doctor</h1>
-        <fieldset style="width: 40%">
+        <fieldset style="width: 42%">
             <legend>Datos del Doctor</legend>
             <br><table>
                 <tr>
-                    <th>Especialidad:</th>
-                    <td><input type="text" id="specialty"> </td>
-                </tr> 
-                <tr>
-                    <th>Año de Graduacion:</th>
-                    <td><input type="number" id="graduate_year"> </td>
-                </tr> 
-                <tr>
-                    <th>ID Departamento:</th>
-                    <td><input type="number" id="department_id"> </td>
-                </tr> 
-                <tr>
                     <th>Nombre:</th>
                     <td><input type="text" id="name"> </td>
+                </tr>
+                <tr>
+                    <th>Departamento:</th>
+                    <td><input type="text" id="department"> </td>
+                </tr>
+                <tr>
+                    <th>Año de Graduacion:</th>
+                    <td><input type="number" id="year"> </td>
+                </tr> 
+                <tr>
+                    <th>Descripción:</th>
+                    <td><input type="text" id="description"> </td>
+                </tr> 
+                <tr>
+                    <th>Especialidad:</th>
+                    <td>
+                        <select id="specialty">
+                        </select>
+                    </td>
                 </tr> 
                 <tr>
                     <td colspan="2">

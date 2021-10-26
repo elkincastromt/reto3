@@ -1,6 +1,6 @@
-function traerInformacionMensajes(){
+function traerInformacionReservaciones(){
     $.ajax({    
-            url : 'http://129.151.123.56:8080/api/Message/all',
+            url : 'http://129.151.123.56:8080/api/Reservation/all',
             type : 'GET',
             dataType : 'JSON',
             
@@ -9,13 +9,17 @@ function traerInformacionMensajes(){
             },
             success : function(resultado) {
                 $("#resultado").empty();
-                tabla = "<center><table border='1'><tr><th>Mensaje<th>Doctor<th>Cliente"
+                tabla = "<center><table border='1'><tr><th>ID<th>Fecha Creacion<th>Fecha Reserva<th>ID Cliente<th>Nombre Cliente<th>Correo Cliente<th>Nombre Doctor"
                 filas = ""
                 for(i = 0;  i < resultado.length; i++){
                    filas += "<tr>"
-                   filas +="<td>"+resultado[i].messageText+"</td>"
-                   filas +="<td>"+resultado[i].doctor.name+"</td>"
+                   filas +="<td>"+resultado[i].idReservation+"</td>"
+                   filas +="<td>"+resultado[i].startDate.substr(0,10)+"</td>"
+                   filas +="<td>"+resultado[i].devolutionDate.substr(0,10)+"</td>"
+                   filas +="<td>"+resultado[i].client.idClient+"</td>"
                    filas +="<td>"+resultado[i].client.name+"</td>"
+                   filas +="<td>"+resultado[i].client.email+"</td>"
+                   filas +="<td>"+resultado[i].doctor.name+"</td>"
                    /*filas +="<td><button onclick='eliminarMensaje("+resultado[i].id+")'>Eliminar</button>"
                    filas += "<button onclick='actualizarMensaje("+resultado[i].id+")'>Actualizar</button>"*/
                 }
@@ -25,26 +29,30 @@ function traerInformacionMensajes(){
         });
 }
 
-function buscarPorIDMensajes(id){
+function buscarPorIDReservaciones(id){
     if(!validarCampo(id))
         alert("Primero ingrese un dato en el campo "+id.attr("id"))
     else{
         $.ajax({    
-            url : 'http://129.151.123.56:8080/api/Message/'+id.val(),
+            url : 'http://129.151.123.56:8080/api/Reservation/'+id.val(),
             dataType : 'JSON',
             type : 'GET',
             success : function(resultado) {
-                tabla = "<center><table border='1'><tr><th>Mensaje<th>Doctor<th>Cliente"
+                tabla = "<center><table border='1'><tr><th>ID<th>Fecha Creacion<th>Fecha Reserva<th>ID Cliente<th>Nombre Cliente<th>Correo Cliente<th>Nombre Doctor"
                 filas =""
                 if(resultado){
                     console.log(resultado)
                     $("#resultado").empty();
                     filas += "<tr>"
-                    filas +="<td>"+resultado.messageText+"</td>"
-                    filas +="<td>"+resultado.doctor.name+"</td>"
+                    filas +="<td>"+resultado.idReservation+"</td>"
+                    filas +="<td>"+resultado.startDate.substr(0,10)+"</td>"
+                    filas +="<td>"+resultado.devolutionDate.substr(0,10)+"</td>"
+                    filas +="<td>"+resultado.client.idClient+"</td>"
                     filas +="<td>"+resultado.client.name+"</td>"
-                    /*filas +="<td><button onclick='eliminarMensaje("+resultado.items[0].id+")'>Eliminar</button>"
-                    filas += "<button onclick='actualizarMensaje("+resultado.items[0].id+")'>Actualizar</button>"*/
+                    filas +="<td>"+resultado.client.email+"</td>"
+                    filas +="<td>"+resultado.doctor.name+"</td>" 
+                    /*filas +="<td><button onclick='eliminarMensaje("+resultado.items.id+")'>Eliminar</button>"
+                    filas += "<button onclick='actualizarMensaje("+resultado.items.id+")'>Actualizar</button>"*/
                     $("#resultado").append(tabla + filas+"</tr></table></center>")  
                 }
                 else{
@@ -61,9 +69,10 @@ function buscarPorIDMensajes(id){
     }
 }
 
-function guardarMensaje(){ 
+function guardarReservacion(){ 
 var datos ={ 
-        messageText: $("#messageText").val(),
+    startDate: Date.now(),
+    devolutionDate: $("#devolutionDate").val(),
         client: {
             idClient: $("#client").val()
         },
@@ -73,7 +82,7 @@ var datos ={
     }
 
     $.ajax({    
-        url : 'http://129.151.123.56:8080/api/Message/save',
+        url : 'http://129.151.123.56:8080/api/Reservation/save',
         data : JSON.stringify(datos),
         type : 'POST',
         contentType: 'application/json',
@@ -89,7 +98,7 @@ var datos ={
         complete : function(xhr, status) {
             alert('Petición realizada '+xhr.status);
             limpiarFormulario();
-            window.location.href="mensajes.html";
+            window.location.href="reservaciones.html";
         }
     });
 }

@@ -1,6 +1,6 @@
-function traerInformacionDoctores(){
+function traerInformacionEspecialidades(){
     $.ajax({    
-            url : 'http://129.151.123.56:8080/api/Doctor/all',
+            url : 'http://129.151.123.56:8080/api/Specialty/all',
             type : 'GET',
             dataType : 'JSON',
             
@@ -9,18 +9,15 @@ function traerInformacionDoctores(){
             },
             success : function(resultado) {
                 $("#resultado").empty();
-                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Departamento<th>Año de Graduacion<th>Descripcion<th>Especialidad"
+                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Descripcion"
                 filas = ""
                 for(i = 0;  i < resultado.length; i++){
                    filas += "<tr>"
                    filas +="<td>"+resultado[i].id+"</td>"   
-                   filas +="<td>"+resultado[i].name+"</td>" 
-                   filas +="<td>"+resultado[i].department+"</td>" 
-                   filas +="<td>"+resultado[i].year+"</td>" 
+                   filas +="<td>"+resultado[i].name+"</td>"
                    filas +="<td>"+resultado[i].description+"</td>"
-                   filas +="<td>"+resultado[i].specialty.name+"</td>"  
-                   /*filas +="<td><button onclick='eliminarDoctor("+resultado[i].id+")'>Eliminar</button>"
-                   filas += "<button onclick='actualizarDoctor("+resultado[i].id+")'>Actualizar</button>"*/
+                   /*filas +="<td><button onclick='eliminarSpecialty("+resultado[i].id+")'>Eliminar</button>"
+                   filas += "<button onclick='actualizarSpecialty("+resultado[i].id+")'>Actualizar</button>"*/
                 }
                 $("#resultado").append(tabla + filas+"</tr></table></center>")
                 console.log(resultado)
@@ -28,16 +25,16 @@ function traerInformacionDoctores(){
         });
 }
 
-function buscarPorIDDoctores(id){
+function buscarPorIDEspecialidades(id){
     if(!validarCampo(id))
         alert("Primero ingrese un dato en el campo "+id.attr("id"))
     else{
         $.ajax({    
-            url : 'http://129.151.123.56:8080/api/Doctor/'+id.val(),
+            url : 'http://129.151.123.56:8080/api/Specialty/'+id.val(),
             type : 'GET',
             dataType : 'JSON',
             success : function(resultado) {
-                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Departamento<th>Año de Graduacion<th>Descripcion<th>Especialidad"
+                tabla = "<center><table border='1'><tr><th>ID<th>Nombre<th>Descripcion"
                 filas =""
                 console.log(resultado)
                 if(resultado){
@@ -46,16 +43,13 @@ function buscarPorIDDoctores(id){
                     filas += "<tr>"
                     filas +="<td>"+resultado.id+"</td>" 
                     filas +="<td>"+resultado.name+"</td>"
-                    filas +="<td>"+resultado.department+"</td>"
-                    filas +="<td>"+resultado.year+"</td>"
                     filas +="<td>"+resultado.description+"</td>"
-                    filas +="<td>"+resultado.specialty.name+"</td>"
-                    /*filas +="<td><button onclick='eliminarDoctor("+resultado.id+")'>Eliminar</button>"
-                    filas += "<button onclick='actualizarDoctor("+resultado.id+")'>Actualizar</button>"*/
+                    /*filas +="<td><button onclick='eliminarSpecialty("+resultado.id+")'>Eliminar</button>"
+                    filas += "<button onclick='actualizarSpecialty("+resultado.id+")'>Actualizar</button>"*/
                     $("#resultado").append(tabla + filas+"</tr></table></center>")  
                 }
                 else{
-                    alert("Doctor con ID "+id.val()+" no existe")
+                    alert("Specialty con ID "+id.val()+" no existe")
                 }
             },
             error : function(xhr, status) {
@@ -68,18 +62,13 @@ function buscarPorIDDoctores(id){
     }
 }
 
-function guardarDoctor(){ 
+function guardarEspecialidad(){ 
 var datos={ 
     name: $("#name").val(),
-    department: $("#department").val(),
-    year: $("#year").val(),
-    description: $("#description").val(),
-    specialty: {
-                id: $("#specialty").val()
-               }
+    description: $("#description").val()
     }
     $.ajax({    
-        url : 'http://129.151.123.56:8080/api/Doctor/save',
+        url : 'http://129.151.123.56:8080/api/Specialty/save',
         data : JSON.stringify(datos),
         type : 'POST',
         contentType: 'application/json',
@@ -95,14 +84,14 @@ var datos={
         complete : function(xhr, status) {
             alert('Petición realizada '+xhr.status);
             limpiarFormulario();
-            window.location.href="doctores.html";
+            window.location.href="especialidades.html";
         }
     });
 }
 
-function eliminarDoctor(idDoctor){
-    var datos={id:idDoctor}
-    console.log(idDoctor);
+function eliminarSpecialty(idSpecialty){
+    var datos={id:idSpecialty}
+    console.log(idSpecialty);
     
     $.ajax({    
         url : 'https://g1a87438372da7f-database1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/doctor/doctor',
@@ -125,12 +114,12 @@ function eliminarDoctor(idDoctor){
     window.location.href="doctores.html";  
 }
 
-function actualizarDoctor(idDoctor){
-    console.log(idDoctor)
-    location.href="actualizarDoctores.html?variable="+idDoctor+"";
+function actualizarSpecialty(idSpecialty){
+    console.log(idSpecialty)
+    location.href="actualizarSpecialtyes.html?variable="+idSpecialty+"";
 }
 
-function cargarDatosDoctor(id){
+function cargarDatosSpecialty(id){
     $.ajax({    
         url : 'https://g1a87438372da7f-database1.adb.sa-santiago-1.oraclecloudapps.com/ords/admin/doctor/doctor/'+id,
         dataType : 'JSON',
@@ -148,7 +137,7 @@ function cargarDatosDoctor(id){
     });
 }
 
-function editarDoctor(){ 
+function editarSpecialty(){ 
 var datos={
         id:$("#id").val(),
         specialty: $("#specialty").val(),
@@ -195,8 +184,8 @@ function cargarDatosSelect(){
                 options += "<option value='' selected>Seleccione especialidad</option>"
                 for(i = 0;  i < resultado.length; i++){
                     options +="<option value='"+resultado[i].id+"'>"+resultado[i].name+"</option>"
-                   /*filas +="<td><button onclick='eliminarDoctor("+resultado[i].id+")'>Eliminar</button>"
-                   filas += "<button onclick='actualizarDoctor("+resultado[i].id+")'>Actualizar</button>"*/
+                   /*filas +="<td><button onclick='eliminarSpecialty("+resultado[i].id+")'>Eliminar</button>"
+                   filas += "<button onclick='actualizarSpecialty("+resultado[i].id+")'>Actualizar</button>"*/
                 }
                 $("#specialty").append(options)
                 console.log(resultado)
